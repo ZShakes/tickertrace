@@ -1,0 +1,366 @@
+{% extends "base.html" %}
+
+{% block title %}{{ stock.symbol }} - {{ stock.name }} | TickerTrace{% endblock %}
+
+{% block extra_css %}
+<style>
+    .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #f0f0f0;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        transition: background 0.3s;
+    }
+    
+    .back-button:hover {
+        background: #e0e0e0;
+    }
+    
+    .stock-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .stock-symbol {
+        font-size: 2.5em;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 5px;
+    }
+    
+    .stock-name {
+        font-size: 1.3em;
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    .stock-type {
+        display: inline-block;
+        padding: 5px 15px;
+        background: #667eea;
+        color: white;
+        border-radius: 20px;
+        font-size: 0.9em;
+    }
+    
+    .price-section {
+        text-align: center;
+        margin: 30px 0;
+        padding: 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        color: white;
+    }
+    
+    .current-price {
+        font-size: 3em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .price-change {
+        font-size: 1.5em;
+    }
+    
+    .price-change.positive {
+        color: #4caf50;
+    }
+    
+    .price-change.negative {
+        color: #f44336;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+    }
+    
+    .stat-card {
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+    }
+    
+    .stat-label {
+        color: #888;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+    }
+    
+    .stat-value {
+        color: #333;
+        font-size: 1.3em;
+        font-weight: 600;
+    }
+    
+    .chart-section {
+        margin-top: 40px;
+    }
+    
+    .chart-title {
+        font-size: 1.5em;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .chart-container {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+    }
+    
+    .info-section {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f0f7ff;
+        border-radius: 8px;
+    }
+    
+    .info-section h3 {
+        color: #667eea;
+        margin-bottom: 15px;
+    }
+    
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .info-item:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        color: #666;
+        font-weight: 500;
+    }
+    
+    .info-value {
+        color: #333;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <a href="/" class="back-button">← Back to Search</a>
+    
+    <div class="stock-header">
+        <div class="stock-symbol">{{ stock.symbol }}</div>
+        <div class="stock-name">{{ stock.name }}</div>
+        <span class="stock-type">{{ stock.type }}</span>
+    </div>
+    
+    <div class="price-section">
+        <div class="current-price">
+            {% if stock.current_price != 'N/A' %}
+                ${{ "%.2f"|format(stock.current_price) }}
+            {% else %}
+                N/A
+            {% endif %}
+        </div>
+        <div class="price-change {% if stock.change != 'N/A' %}{% if stock.change >= 0 %}positive{% else %}negative{% endif %}{% endif %}">
+            {% if stock.change != 'N/A' and stock.change_percent != 'N/A' %}
+                {% if stock.change >= 0 %}▲{% else %}▼{% endif %}
+                ${{ "%.2f"|format(stock.change|abs) }} ({{ "%.2f"|format(stock.change_percent|abs) }}%)
+            {% else %}
+                N/A
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Previous Close</div>
+            <div class="stat-value">
+                {% if stock.previous_close != 'N/A' %}
+                    ${{ "%.2f"|format(stock.previous_close) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Open</div>
+            <div class="stat-value">
+                {% if stock.open != 'N/A' %}
+                    ${{ "%.2f"|format(stock.open) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Day High</div>
+            <div class="stat-value">
+                {% if stock.day_high != 'N/A' %}
+                    ${{ "%.2f"|format(stock.day_high) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Day Low</div>
+            <div class="stat-value">
+                {% if stock.day_low != 'N/A' %}
+                    ${{ "%.2f"|format(stock.day_low) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">52 Week High</div>
+            <div class="stat-value">
+                {% if stock.week_52_high != 'N/A' %}
+                    ${{ "%.2f"|format(stock.week_52_high) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">52 Week Low</div>
+            <div class="stat-value">
+                {% if stock.week_52_low != 'N/A' %}
+                    ${{ "%.2f"|format(stock.week_52_low) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Volume</div>
+            <div class="stat-value">
+                {% if stock.volume != 'N/A' %}
+                    {{ "{:,}".format(stock.volume) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Market Cap</div>
+            <div class="stat-value">
+                {% if stock.market_cap != 'N/A' %}
+                    ${{ "{:,.0f}".format(stock.market_cap) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">P/E Ratio</div>
+            <div class="stat-value">
+                {% if stock.pe_ratio != 'N/A' %}
+                    {{ "%.2f"|format(stock.pe_ratio) }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Dividend Yield</div>
+            <div class="stat-value">
+                {% if stock.dividend_yield != 'N/A' %}
+                    {{ "%.2f"|format(stock.dividend_yield * 100) }}%
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    {% if stock.sector != 'N/A' or stock.industry != 'N/A' %}
+    <div class="info-section">
+        <h3>Company Information</h3>
+        {% if stock.sector != 'N/A' %}
+        <div class="info-item">
+            <span class="info-label">Sector:</span>
+            <span class="info-value">{{ stock.sector }}</span>
+        </div>
+        {% endif %}
+        {% if stock.industry != 'N/A' %}
+        <div class="info-item">
+            <span class="info-label">Industry:</span>
+            <span class="info-value">{{ stock.industry }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% if historical_data %}
+    <div class="chart-section">
+        <h2 class="chart-title">30-Day Price History</h2>
+        <div class="chart-container">
+            <canvas id="priceChart"></canvas>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% if historical_data %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    const historicalData = {{ historical_data | tojson }};
+    
+    const labels = historicalData.map(d => d.date);
+    const prices = historicalData.map(d => d.close);
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Close Price ($)',
+                data: prices,
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toFixed(2);
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

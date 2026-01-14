@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="search-box">
+        <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Search for Stocks & ETFs</h2>
+        
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+        
+        <form method="POST" action="/search" class="search-form">
+            <input type="text" 
+                   name="ticker" 
+                   placeholder="Enter ticker symbol (e.g., AAPL, SPY, TSLA)" 
+                   required
+                   autocomplete="off">
+            <button type="submit">Search</button>
+        </form>
+        
+        <div class="info-text">
+            <p>Enter any stock ticker or ETF symbol to get real-time market data and insights.</p>
+        </div>
+        
+        <div class="examples">
+            <p><strong>Popular Examples:</strong> AAPL (Apple), GOOGL (Google), MSFT (Microsoft), SPY (S&P 500 ETF), QQQ (Nasdaq ETF)</p>
+        </div>
+    </div>
+    
+    <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e0e0e0;">
+        <h3 style="text-align: center; color: #667eea; margin-bottom: 20px;">Features</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                <h4 style="color: #667eea; margin-bottom: 10px;">📊 Real-time Data</h4>
+                <p style="color: #666;">Get up-to-date stock prices and market information powered by yfinance API.</p>
+            </div>
+            <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                <h4 style="color: #667eea; margin-bottom: 10px;">📈 Historical Charts</h4>
+                <p style="color: #666;">View 30-day price history and trends for any stock or ETF.</p>
+            </div>
+            <div style="padding: 20px; background: #f9f9f9; border-radius: 8px;">
+                <h4 style="color: #667eea; margin-bottom: 10px;">💼 Comprehensive Info</h4>
+                <p style="color: #666;">Access detailed information including market cap, P/E ratio, sector, and more.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
