@@ -55,12 +55,30 @@ pip install -r requirements.txt
 python app.py
 ```
 
-2. Open your web browser and navigate to:
+By default, the application runs on `http://127.0.0.1:5000` in production mode. 
+
+2. For development with debug mode, set environment variables:
+```bash
+export FLASK_DEBUG=true
+export FLASK_HOST=0.0.0.0
+export FLASK_PORT=5000
+python app.py
+```
+
+Or on Windows:
+```cmd
+set FLASK_DEBUG=true
+set FLASK_HOST=0.0.0.0
+set FLASK_PORT=5000
+python app.py
+```
+
+3. Open your web browser and navigate to:
 ```
 http://localhost:5000
 ```
 
-3. Enter a stock ticker symbol (e.g., AAPL, GOOGL, TSLA) or ETF symbol (e.g., SPY, QQQ) in the search box and click "Search"
+4. Enter a stock ticker symbol (e.g., AAPL, GOOGL, TSLA) or ETF symbol (e.g., SPY, QQQ) in the search box and click "Search"
 
 ### API Usage
 
@@ -113,14 +131,34 @@ Try searching for these popular tickers:
 
 ## Development
 
+### Environment Variables
+
+The application supports the following environment variables for configuration:
+
+- `FLASK_DEBUG`: Set to `true` to enable debug mode (default: `false`)
+- `FLASK_HOST`: Host to bind the server to (default: `127.0.0.1`)
+- `FLASK_PORT`: Port to run the server on (default: `5000`)
+
 ### Running in Debug Mode
 
-The application runs in debug mode by default, which provides:
+For development, you can enable debug mode which provides:
 - Auto-reloading when code changes
 - Detailed error pages
 - Debug toolbar
 
-For production deployment, set `debug=False` in `app.py`.
+To enable debug mode:
+```bash
+export FLASK_DEBUG=true
+python app.py
+```
+
+### Production Deployment
+
+For production deployment:
+- Keep `FLASK_DEBUG` unset or set to `false`
+- Use a production WSGI server like Gunicorn or uWSGI
+- Set appropriate host/port via environment variables
+- Consider using a reverse proxy like Nginx
 
 ### Customization
 
