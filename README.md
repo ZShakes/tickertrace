@@ -139,6 +139,13 @@ The application supports the following environment variables for configuration:
 - `FLASK_HOST`: Host to bind the server to (default: `127.0.0.1`)
 - `FLASK_PORT`: Port to run the server on (default: `5000`)
 
+You can copy `.env.example` to `.env` and modify the values as needed. Note that `.env` files are gitignored for security.
+
+```bash
+cp .env.example .env
+# Edit .env with your preferred settings
+```
+
 ### Running in Debug Mode
 
 For development, you can enable debug mode which provides:
