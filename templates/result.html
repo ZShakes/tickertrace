@@ -314,7 +314,7 @@
 
 {% block extra_js %}
 {% if historical_data %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-8DqVh7LH8GA8m0V2N64VoLEfTDlDUxE3HGbsKp5VLEi5IIWILMJ9IjA9s3u3q/cT" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
 <script>
     const ctx = document.getElementById('priceChart').getContext('2d');
     const historicalData = {{ historical_data | tojson }};
