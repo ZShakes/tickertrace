@@ -6,7 +6,17 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    return render_template('home_page.html')
+
+
+@app.route('/tracker')
+def tracker():
     return render_template('index.html')
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
 @app.route('/api/ticker')
@@ -28,16 +38,6 @@ def api_ticker():
     payload = external_api.get_ticker_payload(symbol, period=period, interval=interval)
     return jsonify(payload)
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
-from flask import Flask, render_template, request, jsonify
-
-app = Flask(__name__)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/track', methods=['POST'])
 def track():
@@ -72,6 +72,7 @@ def track():
             stock['portfolio_percentage'] = (stock['total_value'] / total_portfolio_value) * 100
     
     return render_template('results.html', stocks=stocks, total_portfolio_value=total_portfolio_value)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port=5000)
