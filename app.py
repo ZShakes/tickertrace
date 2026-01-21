@@ -14,6 +14,11 @@ def tracker():
     return render_template('index.html')
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @app.route('/api/ticker')
 def api_ticker():
     """API endpoint for frontend to get ticker summary + series.
