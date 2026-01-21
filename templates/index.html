@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TickerTrace</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>TickerTrace Stock Tracker</h1>
+        
+        <form method="POST" action="/track">
+            <div class="form-group">
+                <label for="ticker1">Ticker 1:</label>
+                <input type="text" id="ticker1" name="ticker1" placeholder="e.g., AAPL" maxlength="5">
+                <input type="number" id="shares1" name="shares1" placeholder="Number of shares" min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="ticker2">Ticker 2:</label>
+                <input type="text" id="ticker2" name="ticker2" placeholder="e.g., GOOGL" maxlength="5">
+                <input type="number" id="shares2" name="shares2" placeholder="Number of shares" min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="ticker3">Ticker 3:</label>
+                <input type="text" id="ticker3" name="ticker3" placeholder="e.g., MSFT" maxlength="5">
+                <input type="number" id="shares3" name="shares3" placeholder="Number of shares" min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="ticker4">Ticker 4:</label>
+                <input type="text" id="ticker4" name="ticker4" placeholder="e.g., TSLA" maxlength="5">
+                <input type="number" id="shares4" name="shares4" placeholder="Number of shares" min="0" step="0.01">
+            </div>
+
+            <div class="form-group">
+                <label for="ticker5">Ticker 5:</label>
+                <input type="text" id="ticker5" name="ticker5" placeholder="e.g., AMZN" maxlength="5">
+                <input type="number" id="shares5" name="shares5" placeholder="Number of shares" min="0" step="0.01">
+            </div>
+
+            <button type="submit" class="submit-btn">Get Stock Info</button>
+        </form>
+    </div>
+</body>
+</html>

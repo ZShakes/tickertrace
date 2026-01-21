@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TickerTrace Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Portfolio Overview</h1>
+        
+        <div class="portfolio-summary">
+            <p><strong>Total Portfolio Value:</strong> ${{ total_portfolio_value | round(2) }}</p>
+        </div>
+
+        <div class="stocks-grid">
+            {% for stock in stocks %}
+            <div class="stock-card">
+                <div class="stock-header">
+                    <h2 class="stock-ticker">{{ stock.ticker }}</h2>
+                    <p class="stock-company">{{ stock.company_name }}</p>
+                </div>
+
+                <div class="stock-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Shares Owned:</span>
+                        <span class="detail-value">{{ stock.shares }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Current Price:</span>
+                        <span class="detail-value">${{ stock.current_price | round(2) }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Daily Change:</span>
+                        <span class="detail-value change-value" 
+                              data-change="{{ stock.percentage_change }}"
+                              data-price-change="{{ stock.price_change_usd }}">
+                            <span class="percentage {% if stock.percentage_change >= 0 %}positive{% else %}negative{% endif %}">
+                                {% if stock.percentage_change >= 0 %}+{% endif %}{{ stock.percentage_change | round(2) }}%
+                            </span>
+                            (<span class="price-change {% if stock.price_change_usd >= 0 %}positive{% else %}negative{% endif %}">
+                                {% if stock.price_change_usd >= 0 %}+{% endif %}${{ stock.price_change_usd | round(2) }}
+                            </span>)
+                        </span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Total Value:</span>
+                        <span class="detail-value total-value">${{ stock.total_value | round(2) }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-label">Portfolio %:</span>
+                        <span class="detail-value portfolio-percent">{{ stock.portfolio_percentage | round(2) }}%</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="actions">
+            <a href="/" class="back-button">Track More Stocks</a>
+        </div>
+    </div>
+</body>
+</html>
