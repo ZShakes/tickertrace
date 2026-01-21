@@ -3,10 +3,6 @@ import external_api
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/api/ticker')
 def api_ticker():
     """API endpoint for frontend to get ticker summary + series.
