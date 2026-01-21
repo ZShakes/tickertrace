@@ -3,11 +3,9 @@ import external_api
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/api/ticker')
 def api_ticker():
@@ -27,13 +25,6 @@ def api_ticker():
 
     payload = external_api.get_ticker_payload(symbol, period=period, interval=interval)
     return jsonify(payload)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-from flask import Flask, render_template, request, jsonify
-
-app = Flask(__name__)
 
 @app.route('/')
 def index():
