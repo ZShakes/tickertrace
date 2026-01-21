@@ -16,3 +16,6 @@ Many users want an easy way to track the value of multiple stocks they own witho
 1. Clone the repository from GitHub
 2. Ensure python3 is installed on your system 
 3. Install the required dependencies using 'pip'
+
+# Data source 
+Market data is retrieved using the [yfinance API](https://pypi.org/project/yfinance/)
