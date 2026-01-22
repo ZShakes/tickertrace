@@ -10,6 +10,17 @@
     <div class="container">
         <h1>Portfolio Overview</h1>
         
+        {% if errors %}
+        <div class="error-messages">
+            <h3>Errors:</h3>
+            <ul>
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
         <div class="portfolio-summary">
             <p><strong>Total Portfolio Value:</strong> ${{ total_portfolio_value | round(2) }}</p>
         </div>
@@ -62,8 +73,40 @@
         </div>
 
         <div class="actions">
-            <a href="/" class="back-button">Track More Stocks</a>
+            <button id="download-btn" class="download-button">Download as CSV</button>
+            <a href="/tracker" class="back-button">Track More Stocks</a>
         </div>
     </div>
+
+    <!-- JavaScript to handle CSV download -->
+    <script>
+        document.getElementById('download-btn').addEventListener('click', async function() {
+            const stocks = {{ stocks | tojson }};
+            const total = {{ total_portfolio_value }};
+            
+            const response = await fetch('/download-csv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    stocks: stocks,
+                    total_portfolio_value: total
+                })
+            });
+            
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'portfolio.csv';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            }
+        });
+    </script>
 </body>
 </html>
